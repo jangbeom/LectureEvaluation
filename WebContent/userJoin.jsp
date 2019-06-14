@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,6 +13,21 @@
 <!-- 커스텀 CSS 추가하기 -->
 <link rel="stylesheet" href="./css/custom.css">
 <body>
+<%
+	String userID = null;
+	if(session.getAttribute("userID") != null) {
+		userID = (String) session.getAttribute("userID");
+	}
+	if(userID != null) {
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('로그인이 된 상태입니다.');");
+		script.println("location.href = 'index.jsp'");
+		script.println("</script>");
+		script.close();	
+		return;
+	} 
+%>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="index.jsp">강의평가 웹 사이트</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -20,15 +36,26 @@
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
+				<li class="nav-item"><a class="nav-link"
 					href="index.jsp">메인</a></li>
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" id="dropdown"
 					data-toggle="dropdown">회원관리</a>
 					<div class="dropdown-menu" aria-labelledby="dropdown">
-						<a class="dropdown-item" href="userLogin.jsp">로그인</a> 
-						<a class="dropdown-item" href="userJoin.jsp">회원가입</a> 
+						<%
+							if (userID == null) {
+						%>
+
+						<a class="dropdown-item" href="userLogin.jsp">로그인</a> <a
+							class="dropdown-item active" href="userJoin.jsp">회원가입</a>
+						<%
+							} else {
+						%>
+
 						<a class="dropdown-item" href="userLogout.jsp">로그아웃</a>
+						<%
+							}
+						%>
 					</div>
 				</li>
 			</ul>
@@ -41,15 +68,15 @@
 	<section class="container mt-3" style="max-width: 560px;">
 		<form method="post" action="./userRegisterAction.jsp">
 			<div class="form-group">
-				<lable>아이디</lable>
+				<label>아이디</label>
 				<input type="text" name="userID" class="form-control">
 			</div>
 			<div class="form-group">
-				<lable>비밀번호</lable>
+				<label>비밀번호</label>
 				<input type="password" name="userPassword" class="form-control">
 			</div>
 			<div class="form-group">
-				<lable>이메일</lable>
+				<label>이메일</label>
 				<input type="email" name="userEmail" class="form-control">
 			</div>
 			<button type="submit" class="btn btn-primary">회원가입</button>

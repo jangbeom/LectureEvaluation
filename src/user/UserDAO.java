@@ -38,7 +38,7 @@ public class UserDAO {
 	}
 	
 	public int join(UserDTO user){
-		String SQL = "INSERT INTO USER VALUSE(?, ?, ?, ?, false)";
+		String SQL = "INSERT INTO USER VALUES(?, ?, ?, ?, false)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -47,8 +47,8 @@ public class UserDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, user.getUserID());
 			pstmt.setString(2, user.getUserPassword());
-			pstmt.setString(3, user.getUserEamil());
-			pstmt.setString(4, user.getUserEamilHash());
+			pstmt.setString(3, user.getUserEmail());
+			pstmt.setString(4, user.getUserEmailHash());
 			return pstmt.executeUpdate();
 		}catch (Exception e){
 			e.printStackTrace();
@@ -115,7 +115,6 @@ public class UserDAO {
 			conn = DatabaseUtil.getConnection();
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, userID);
-			rs = pstmt.executeQuery();
 			pstmt.executeUpdate();
 			return true;
 		}catch (Exception e){
